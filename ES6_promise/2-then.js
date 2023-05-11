@@ -1,6 +1,6 @@
 export default function handleResponseFromAPI(promise) {
   // Function to handle the response from the API
-  
+
   return promise
     .then(() => ({ status: 200, body: 'success' }))
     // Attach a callback function to be executed when the promise is resolved.
