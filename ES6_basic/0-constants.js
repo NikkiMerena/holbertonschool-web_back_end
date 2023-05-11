@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 export function taskFirst() {
     const task = 'I prefer const when I can.';
     return task;
