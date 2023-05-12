@@ -7,7 +7,6 @@ export default function divideFunction(numerator, denominator) {
     throw new Error('cannot divide by 0');
   }
 
-    return (numerator / denominator);
-    // Return the result of dividing the numerator by the denominator
+  return (numerator / denominator);
+  // Return the result of dividing the numerator by the denominator
 }
-  
