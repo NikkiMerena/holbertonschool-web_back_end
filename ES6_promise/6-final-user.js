@@ -6,7 +6,7 @@ import uploadPhoto from './5-photo-reject';
 
 export default async function handleProfileSignup(firstName, lastName, fileName) {
   // Function to handle profile signup
-  
+
   const status = [];
   // Create an empty array to store the status of each step in the signup process
   
@@ -15,9 +15,9 @@ export default async function handleProfileSignup(firstName, lastName, fileName)
     .then(async (data) => {
       // Attach a callback function to be executed when the signUpUser promise resolves
       // The resolved data is passed as 'data'
-      
+
       status.push({ status: 'fulfilled', value: data });
-      // Push an object into the 'status' array indicating that the signUpUser promise was fulfilled successfully
+      // Pushanobjectintothe'status'arrayindicatingthatsignUpUser promise was fulfilled successfully
       
       await uploadPhoto(fileName);
       // Wait for the uploadPhoto promise to resolve or reject
