@@ -28,10 +28,10 @@ export default async function handleProfileSignup(firstName, lastName, fileName)
       // The error object is passed as 'err'
 
       status.push({ status: 'rejected', value: err.toString() });
-      // Push an object into the 'status' array indicating that there was 
+      // Push an object into the 'status' array indicating that there was
       // arejettion w/the error message converted to a string
     });
-    
+  
   return status;
   // Return the 'status' array containing the status of each step in the signup process
 }
