@@ -17,7 +17,8 @@ export default async function handleProfileSignup(firstName, lastName, fileName)
       // The resolved data is passed as 'data'
 
       status.push({ status: 'fulfilled', value: data });
-      // Pushanobjectintothe'status'arrayindicatingthatsignUpUser promise was fulfilled successfully
+      // Push an object into the 'status' array indicating that signUpUser promise
+      // was fulfilled successfully
 
       await uploadPhoto(fileName);
       // Wait for the uploadPhoto promise to resolve or reject
@@ -27,7 +28,8 @@ export default async function handleProfileSignup(firstName, lastName, fileName)
       // The error object is passed as 'err'
 
       status.push({ status: 'rejected', value: err.toString() });
-      // Pushanobjectintothe'status'arrayindicatingthattherewasarejectionw/theerrormessageconvertedtostring
+      // Push an object into the 'status' array indicating that there was 
+      // arejettion w/the error message converted to a string
     });
     
   return status;
