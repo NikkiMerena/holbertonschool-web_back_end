@@ -31,7 +31,7 @@ export default async function handleProfileSignup(firstName, lastName, fileName)
       // Push an object into the 'status' array indicating that there was
       // arejettion w/the error message converted to a string
     });
-  
+
   return status;
   // Return the 'status' array containing the status of each step in the signup process
 }
