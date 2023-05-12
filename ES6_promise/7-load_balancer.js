@@ -5,4 +5,4 @@ export default function loadBalancer(chinaDownload, USDownload) {
   // Returns a new Promise that resolves or rejects as soon as one of the promises
   // in the iterable resolves or rejects
   // The promises being compared are 'chinaDownload' and 'USDownload'
-}  
+} 
