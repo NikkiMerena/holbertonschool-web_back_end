@@ -5,6 +5,6 @@ export default function uploadPhoto(fileName) {
     // Create a new Promise that takes a resolver function with resolve and reject parameters
 
     reject(Error(`${fileName} cannot be processed`));
-    // Reject promise & pass an Error object w/ a message indicating that the given fileName cannot be processed
+    // Reject promise & pass an Error object w/ a mess indicatin that the given fileName can'yS be processed
   });
 }
