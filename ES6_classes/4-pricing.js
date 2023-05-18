@@ -1,29 +1,32 @@
-/* eslint-disable no-unused-vars */
-import Currency from './3-currency';
-
-export default class Pricing {
-  constructor(amount, currency) {
-    this._amount = amount;
-    this._currency = currency;
+export default class Currency {
+  constructor(code, name) {
+    this.code = code;
+    this.name = name;
   }
 
-  get amount() {
-    return this._amount;
+  displayFullCurrency() {
+    return (`${this.name} (${this.code})`);
   }
 
-  set amount(amount) {
-    this._amount = amount;
+  set code(value) {
+    if (typeof value !== 'string') {
+      throw new Error('Code must be a string');
+    }
+    this._code = value;
   }
 
-  get currency() {
-    return this._currency;
+  get code() {
+    return (this._code);
   }
 
-  set currency(currency) {
-    this._currency = currency;
+  set name(value) {
+    if (typeof value !== 'string') {
+      throw new Error('Name must be a string');
+    }
+    this._name = value;
   }
 
-  displayFullPrice() {
-    return `${this._amount} ${this._currency.name} (${this.currency.code})`;
+  get name() {
+    return (this._name);
   }
 }
