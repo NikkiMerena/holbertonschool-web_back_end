@@ -1,32 +1,44 @@
-export default class Currency {
-  constructor(code, name) {
-    this.code = code;
-    this.name = name;
+import Currency from './3-currency';
+
+export default class Pricing {
+  constructor(amount, currency) {
+    this._amount = amount;
+    this._currency = currency;
   }
 
-  displayFullCurrency() {
-    return (`${this.name} (${this.code})`);
+  get amount() {
+    return this._amount;
   }
 
-  set code(value) {
-    if (typeof value !== 'string') {
-      throw new Error('Code must be a string');
+  set amount(newAmount) {
+    if (typeof newAmount !== 'number') {
+      throw TypeError('Amount must be a number');
     }
-    this._code = value;
+    this._amount = newAmount;
   }
 
-  get code() {
-    return (this._code);
+  get currency() {
+    return this._currency;
   }
 
-  set name(value) {
-    if (typeof value !== 'string') {
-      throw new Error('Name must be a string');
+  set currency(newCurrency) {
+    if (!(newCurrency instanceof Currency)) {
+      throw TypeError('Currency must be a Currency');
     }
-    this._name = value;
+    this._currency = newCurrency;
   }
 
-  get name() {
-    return (this._name);
+  displayFullPrice() {
+    return `${this._amount} ${this._currency.name} (${this._currency.code})`;
+  }
+
+  static convertPrice(amount, conversionRate) {
+    if (typeof amount !== 'number') {
+      throw TypeError('Amount must be a number');
+    }
+    if (typeof conversionRate !== 'number') {
+      throw TypeError('ConversionRate must be a number');
+    }
+    return amount * conversionRate;
   }
 }
