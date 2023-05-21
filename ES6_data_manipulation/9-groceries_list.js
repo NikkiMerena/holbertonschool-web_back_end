@@ -1,18 +1,9 @@
-function groceriesList() {
-  const groceryMap = {
-    Apples: 10,
-    Tomatoes: 10,
-    Pasta: 1,
-    Rice: 1,
-    Banana: 5,
-  };
-  return groceryMap;
+export default function groceriesList() {
+  return new Map([
+    ['Apples', 10],
+    ['Tomatoes', 10],
+    ['Pasta', 1],
+    ['Rice', 1],
+    ['Banana', 5],
+  ]);
 }
-
-// Calling the function & storing the result in a variable
-const groceryList = groceriesList();
-
-// Printing the grocery List
-console.log(groceriesList);
-
-export default groceriesList;
