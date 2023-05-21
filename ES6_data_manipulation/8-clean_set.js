@@ -1,8 +1,6 @@
 function cleanSet(set, startString) {
-  const cleanedValues = Array.from(set)
-    .filter((value) => value.startsWith(startString))
-    .map((value) => value.slice(startString.length));
-
+  const filteredValues = Array.from(set).filter((value) => value.startsWith(startString));
+  const cleanedValues = filteredValues.map((value) => value.substring(startString.length));
   return cleanedValues.join('-');
 }
 
