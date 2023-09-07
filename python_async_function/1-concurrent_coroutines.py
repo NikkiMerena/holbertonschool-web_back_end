@@ -6,7 +6,7 @@ wait_random n times and returns the list of delay values in ascending order.
 from typing import List
 import asyncio
 from random import uniform
-from basic_async_syntax import wait_random
+wait_random = async_generator = __import__('0-basic_async_syntax').wait_random
 
 
 async def wait_n(n: int, max_delay: int) -> List[float]:
