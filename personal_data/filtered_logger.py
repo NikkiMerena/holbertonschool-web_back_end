@@ -6,7 +6,7 @@ from typing import Sequence
 import logging
 
 # Defibe the fields which are considered as PII
-PII_FIELDS = ("phone", "name", "password", "ssn", "date_of_birth")
+PII_FIELDS = ("phone", "name", "password", "ssn", "email")
 
 
 def get_logger() -> logging.Logger:
