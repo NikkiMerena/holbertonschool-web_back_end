@@ -2,11 +2,43 @@
 """Module for filtering personal data in logs"""
 
 import re
-from typing import List
+from typing import Sequence
 import logging
 
+# Defibe the fields which are considered as PII
+PII_FIELDS = ("name", "email", "passowrd", "ssn", "date_of_birth")
 
-def filter_datum(fields: List[str], redaction: str,
+
+def get_logger() -> logging.Logger:
+    """
+    Returns a logger w/ the name "user_data" configured to log up to INFO level
+    """
+
+    # Create a logger object w/ the name 'user_data'
+    logger = logging.getLogger('user_data')
+
+    # Set the logging level to INFO for the logger
+    logger.setLevel(logging.INFO)
+
+    # Create a StreamHandler object
+    handler = logging.StreamHandler()
+
+    # Create a redactingFormatter object paramererized w/ PII_FIELDS
+    formatter = RedactingFormatter(PII_FIELDS)
+
+    # Set the formatter for the handler to the RedactingFormatter object
+    handler.setFormatter(formatter)
+
+    # Add the handler to the logger
+    logger.addHandler(handler)
+
+    # Set the logger to not propagate messages to other loggers
+    logger.propagate = False
+
+    return logger
+
+
+def filter_datum(fields: Sequence[str], redaction: str,
                  message: str, separator: str) -> str:
     """
     Returns the log message obfuscated.
@@ -32,7 +64,7 @@ class RedactingFormatter(logging.Formatter):
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
     SEPARATOR = ";"
 
-    def __init__(self, fields: List[str]):
+    def __init__(self, fields: Sequence[str]):
         """Initializes the formatter w/ fields to redact."""
         super(RedactingFormatter, self).__init__(self.FORMAT)
         self.fields = fields
