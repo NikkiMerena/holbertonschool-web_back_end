@@ -78,7 +78,11 @@ class RedactingFormatter(logging.Formatter):
                             original_message, self.SEPARATOR)
 
 
-def get_db() -> mysql.connector.connection.MySQLConnection:
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("user_data")
+
+
+def get_db():
     """ Returns a connector to the database"""
 
     username = os.environ.get('PERSONAL_DATA_DB_USERNAME', 'root')
@@ -94,3 +98,31 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     )
 
     return conn
+
+
+def main():
+    conn = get_db()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("SELECT * FROM users")
+
+    for row in cursor:
+        # Step 7: Create log message with filterd fields
+        msg = []
+        for field in row:
+            if field in {"name", "email", "phone", "ssn", "password"}:
+                msg.append(f"{field}=***")
+            else:
+                msg.append(f"{field}={row[field]}")
+
+        log_msg = "; ".join(msg)
+
+        # Step 8: Log the message
+        logger.info(log_msg)
+
+    cursor.close()
+    conn.close()
+
+
+if __name__ == "__main__":
+    main()
