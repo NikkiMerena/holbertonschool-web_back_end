@@ -4,6 +4,8 @@
 import re
 from typing import Sequence
 import logging
+import os
+import mysql.connector
 
 # Defibe the fields which are considered as PII
 PII_FIELDS = ("phone", "name", "password", "ssn", "email")
@@ -74,3 +76,21 @@ class RedactingFormatter(logging.Formatter):
         original_message = super().format(record)
         return filter_datum(self.fields, self.REDACTION,
                             original_message, self.SEPARATOR)
+
+
+def get_db() -> mysql.connector.connection.MySQLConnection:
+    """ Returns a connector to the database"""
+
+    username = os.environ.get('PERSONAL_DATA_DB_USERNAME', 'root')
+    password = os.environ.get('PERSONAL_DATA_DB_PASSWORD', '')
+    host = os.environ.get('PERSONAL_DATA_DB_HOST', 'localhost')
+    db_name = os.environ.get('PERSONAL_DATA_DB_NAME')
+
+    conn = mysql.connector.connect(
+        user=username,
+        password=password,
+        host=host,
+        database=db_name
+    )
+
+    return conn
