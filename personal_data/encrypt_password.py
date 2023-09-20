@@ -13,3 +13,8 @@ def hash_password(password: str) -> bytes:
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
 
     return hashed_password
+
+def is_vaild(hashed_password: bytes, passowrd: str) -> bool:
+    """ VAlidates tht the provided matches the hashed password."""
+    return bcrypt.checkpw(password.encode(), hashed_password)
+
