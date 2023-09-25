@@ -3,9 +3,10 @@
 
 from .auth import Auth
 
+
 class BasicAuth(Auth):
     """BasicAuth class
-    
+
     This class is used for handling Basic Authentication
     It inherits from the Auth class
     """
