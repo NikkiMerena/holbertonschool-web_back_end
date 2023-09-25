@@ -25,9 +25,26 @@ class Auth:
     # excluded-paths. It returns a boolean value.
     # For now, this method is not fully implemented and always returns False.
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
-        """Returns False for now, will be implemented later
+        """Determine if authentication is required for a given path.
+        
+        :param path: string representing the path of the request
+        :param excluded_paths: list of strings representing the paths that don't need authentication
+        :return: True if the path requires authentication, False otherwise
         """
-        return False
+        # Returns True if path is None
+        if path is None:
+            return True
+
+        # Ensure path is formatted with a trailing slash
+        if not path.endswith('/'):
+            path += '/'
+
+        # Returns rue if excluded_paths is None or empty
+        if excluded_paths is None or len(excluded_paths) == 0:
+            return True
+
+        # Returns False if the formatted path is in excluded_paths
+        return path not in excluded_paths
 
     # Defining a method 'authorization_header' that takes an optional request
     # parameter and returns a string.
