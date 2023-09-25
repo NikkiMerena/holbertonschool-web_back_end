@@ -18,6 +18,8 @@ User = TypeVar('User')
 # Defining a class named 'Auth'. This class will serve as a template for
 # implementing authentication systems
 class Auth:
+    """Auth class for managing API authentication
+    """
 
     # Defining a method 'require_auth that takes a path (str) and a list of
     # excluded-paths. It returns a boolean value.
