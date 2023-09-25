@@ -26,9 +26,10 @@ class Auth:
     # For now, this method is not fully implemented and always returns False.
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """Determine if authentication is required for a given path.
-        
+
         :param path: string representing the path of the request
-        :param excluded_paths: list of strings representing the paths that don't need authentication
+        :param excluded_paths: list of strs repping the
+                paths that don't need auth
         :return: True if the path requires authentication, False otherwise
         """
         # Returns True if path is None
