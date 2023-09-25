@@ -51,9 +51,19 @@ class Auth:
     # parameter and returns a string.
     # For now, this method is not fully implemented and always returns None.
     def authorization_header(self, request=None) -> str:
-        """ Return None for now, will be implemented later
+        """"
+        Retrieves the value of the Authorization header in the request.
+
+        Args:
+            request: The Flask request object.
+
+        Returns:
+            The value of the Authoriayion header if it exists, None otherwise.
+            If the request object is None, it also returns None.
         """
-        return None
+        if request is None:
+            return None
+        return request.headers.get('Authorization', None)
 
     # Defining a method 'current_user' that takes an optional request parameter
     # and returns an object of type 'User'.
