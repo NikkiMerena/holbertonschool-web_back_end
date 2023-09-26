@@ -29,7 +29,10 @@ class BasicAuth(Auth):
             not isinstance(decoded_base64_authorization_header, str) or \
                 ':' not in decoded_base64_authorization_header:
             return None, None
-        user_email, user_password = decoded_base64_authorization_header.split(':', 1)
+        decoded_values = decoded_base64_authorization_header.split(':', 1)
+        user_email, user_password = decoded_values
+        # user_email, user_password =
+        # decoded_base64_authorization_header.split(':', 1)
         return user_email, user_password
 
     def decode_base64_authorization_header(
