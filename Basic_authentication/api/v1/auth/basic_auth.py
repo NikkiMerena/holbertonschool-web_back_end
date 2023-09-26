@@ -11,6 +11,28 @@ class BasicAuth(Auth):
     This class is used for handling Basic Authentication
     It inherits from the Auth class
     """
+    def extract_user_credentials(
+            self, decoded_base64_authorization_header: str) -> (str, str):
+        """Returns the user email and password from the Base64 decoded value.
+
+        Args:
+            decoded_base64_authorization_header (str):
+            The Base64 decoded string.
+
+        Returns:
+            tuple: The user email and password as strings if
+            decoded_base64_authorization_header is valid and contains ':'.
+            (None, None): If decoded_base64_authorization_header is
+            None, not a string, or doesn't contain ':'.
+        """
+        if decoded_base64_authorization_header is None or \
+            not isinstance(decoded_base64_authorization_header, str) or \
+                ':' not in decoded_base64_authorization_header:
+            return None, None
+        user_email, user_password =
+        decoded_base64_authorization_header.split(':', 1)
+        return user_email, user_password
+
     def decode_base64_authorization_header(
             self, base64_authorization_header: str) -> str:
         """Returns the decoded value of a Base64 string
