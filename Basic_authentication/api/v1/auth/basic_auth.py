@@ -3,6 +3,8 @@
 
 from .auth import Auth
 import base64
+from typing import TypeVar
+from models.user import User
 
 
 class BasicAuth(Auth):
@@ -77,3 +79,28 @@ class BasicAuth(Auth):
         if not authorization_header.startswith("Basic "):
             return None
         return authorization_header.split(" ", 1)[1]
+
+    def user_object_from_credentials(
+            self, user_email: str, user_pwd: str) -> TypeVar('User'):
+        # Check if user_email or user_pwd is None or not a string
+        if not isinstance(user_email, str) or not isinstance(user_pwd, str):
+            return None
+
+        # Use the class method search of the User to
+        # lookup the list of users based on their email
+        users = User.search({"email": user_email})
+
+        # Check if any User instance with email equal to user_email is found
+        if not users:
+            return None
+
+        # Get the first user instance from the list
+        # of users (assuming email is unique)
+        user = users[0]
+
+        # Check if user_pwd is the password of the User instance found
+        if not user.is_valid_password(user_pwd):
+            return None
+
+        # Return the User instance
+        return user
