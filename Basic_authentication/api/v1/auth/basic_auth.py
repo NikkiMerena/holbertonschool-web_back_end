@@ -5,6 +5,7 @@ from .auth import Auth
 import base64
 from typing import TypeVar
 from models.user import User
+from api.v1.auth.auth import Auth
 
 
 class BasicAuth(Auth):
@@ -109,6 +110,29 @@ class BasicAuth(Auth):
         # Check if user_pwd is the password of the User instance found
         if not user.is_valid_password(user_pwd):
             return None
+
+        # Return the User instance
+        return user
+
+    def current_user(self, request=None) -> TypeVar('User'):
+        """Retrieves the User instance for a request."""
+        # Get the value of the authorization header
+        auth_header = self.authorization_header(request)
+
+        # Extract the base64 authorization header
+        base64_auth_header = self.extract_base64_authorization_header
+        (auth_header)
+
+        # Decode the base64 authorization header
+        decoded_base64_auth_header = self.decode_base64_authorization_header
+        (base64_auth_header)
+
+        # Extract user credentials from the decoded base64 authorization header
+        user_email, user_pwd = self.extract_user_credentials
+        (decoded_base64_auth_header)
+
+        # Retrieve the User instance based on user email and password
+        user = self.user_object_from_credentials(user_email, user_pwd)
 
         # Return the User instance
         return user
