@@ -9,6 +9,7 @@ from flask import request
 # Importing List from type hinting of a list & TypeVar to create
 # generic type var.
 from typing import List, TypeVar
+import os
 
 # Defining a TypeVar named 'User. This is a generic type that will represent
 # the user in the 'current_user' method.
@@ -72,3 +73,15 @@ class Auth:
         """Returns None for now will be implemented later
         """
         return None
+
+    def session_cookie(self,request=None):
+        """Returns a cookie value from a request."""
+        # Return None if request is None
+        if request is None:
+            return None
+        
+        # Get the cookie name from the environment variable SESSION_NAME
+        session_name = os.getenv("SESSION_NAME")
+        
+        # Return the value of the cookie
+        return request.cookies.get(session_name)
