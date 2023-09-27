@@ -8,8 +8,8 @@ import uuid
 class SessionAuth(Auth):
     """ SessionAuth class for handling user sessions """
 
-    user_id_by_session_id = {}  # Class attribute initialized by an empty dictionary
-    
+    user_id_by_session_id = {}
+
     def create_session(self, user_id: str = None) -> str:
         """
         Creates a Session ID for a user_id
@@ -19,9 +19,9 @@ class SessionAuth(Auth):
         :return: the Session ID created
         :rtype: str
         """
-        if user_id is None or not isinstance(user_id, str):  # Return None if user_id is None or not a string
+        if user_id is None or not isinstance(user_id, str):
             return None
 
         session_id = str(uuid.uuid4())  # Generate a Session ID using uuid4()
-        self.user_id_by_session_id[session_id] = user_id  # Store user_id associated with the session_id in the dictionary
+        self.user_id_by_session_id[session_id] = user_id
         return session_id  # Return the generated Session ID
