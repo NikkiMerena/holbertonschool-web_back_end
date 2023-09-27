@@ -16,7 +16,7 @@ Functions:
     - session_auth: Authenticates user and initiates a session.
 """
 
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, request, jsonify, make_response, abort
 from api.v1.views import app_views
 from models.user import User
 from api.v1.app import auth
@@ -70,10 +70,20 @@ def session_auth():
     # Return the response object
     return response
 
-# @app_views.route('/auth_session/logout',
-# methods=['DELETE'], strict_slashes=False)
-# def logout():
-    # if auth.destroy_session(request):
-    # return make_response(jsonify({}), 200)
-    # else:
-    # abort(404)
+
+@app_views.route(
+    '/auth_session/logout', methods=['DELETE'], strict_slashes=False)
+def logout():
+    """Log out by destroying the user's session.
+
+    This view handles the route for logging out a user by destroying
+    their session. If the session is successfully destroyed, it returns a
+    200 OK response; otherwise, it aborts the request with a 404 Not Found.
+
+    Returns:
+        Response: A Flask response object with a JSON payload, or a 404 abort.
+    """
+    if auth.destroy_session(request):
+        return make_response(jsonify({}), 200)
+    else:
+        abort(404)
