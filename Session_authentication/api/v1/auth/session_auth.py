@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
 This module defines the SessionAuth class, which extends the Auth class
-to manage user sessions for authentication. 
+to manage user sessions for authentication.
 
-The SessionAuth class allows for the creation of new user sessions, 
-retrieving User IDs based on Session IDs, and destroying sessions 
-to log out users. This is achieved through the use of a dictionary 
-mapping session IDs to user IDs, and the UUID library for generating 
+The SessionAuth class allows for the creation of new user sessions,
+retrieving User IDs based on Session IDs, and destroying sessions
+to log out users. This is achieved through the use of a dictionary
+mapping session IDs to user IDs, and the UUID library for generating
 unique session IDs.
 
 Classes:
@@ -16,6 +16,7 @@ Classes:
 
 from api.v1.auth.auth import Auth
 import uuid
+from models.user import User
 
 
 class SessionAuth(Auth):
@@ -64,7 +65,6 @@ class SessionAuth(Auth):
         if request is None:
             return False
 
-
         session_id = self.session_cookie(request)
         if session_id is None:
             return False
@@ -75,3 +75,25 @@ class SessionAuth(Auth):
 
         del self.user_id_by_session_id[session_id]
         return True
+
+    def current_user(self, request=None):
+        """
+        Returns a User instance based on a cookie value.
+
+        :param request: The request object.
+        :type request: Request
+        :return: The User instance associated with the session id, else None.
+        :rtype: User or None
+        """
+        # Retrieve the session id from the cookie
+        session_id = self.session_cookie(request)
+        if session_id is None:
+            return None
+
+        # Retrieve the user id associated with the session id
+        user_id = self.user_id_for_session_id(session_id)
+        if user_id is None:
+            return None
+
+        # Retrieve and return the User instance from the database
+        return User.get(user_id)
