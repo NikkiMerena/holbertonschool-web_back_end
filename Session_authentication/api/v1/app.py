@@ -35,14 +35,17 @@ def before_request_func():
 
     # List of paths that don't need authentication
     exempt_paths = ['/api/v1/status/', '/api/v1/unauthorized/',
-                    '/api/v1/forbidden/']
+                    '/api/v1/forbidden/', '/api/v1/auth_session/login/']
 
     # Check if request.path is not in the exempt_paths
     if not auth.require_auth(request.path, exempt_paths):
         return
 
-    # If auth.authorization_header(request) returns None, raise the error 401
-    if auth.authorization_header(request) is None:
+    # If both auth.authorization_header(request) and
+    # auth.session_cookie(request) return None, abort(401)
+    if (auth.authorization_header(request) is None and
+            auth_type == "session_auth" and
+            auth.session_cookie(request) is None):
         abort(401)
 
     # If auth.current_user(request) returns None, raise the error 403
