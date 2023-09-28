@@ -14,10 +14,8 @@ class Auth:
         self._db = DB()
 
     def _hash_password(self, password: str) -> bytes:
-        """Hash a password and return the salted hash."""
-        salt = bcrypt.gensalt()
-        hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
-        return hashed_password
+        """Hash a password."""
+        return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
     def register_user(self, email: str, password: str) -> User:
         """Register a user."""
