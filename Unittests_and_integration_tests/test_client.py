@@ -4,6 +4,12 @@ import unittest
 from parameterized import parameterized
 from unittest.mock import patch, Mock, PropertyMock
 from client import GithubOrgClient
+from fixtures import (
+    org_payload,
+    repos_payload,
+    expected_repos,
+    apache2_repos
+)
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -90,3 +96,44 @@ class TestGithubOrgClient(unittest.TestCase):
             client.has_license(repo, license_key),
             expected_output
         )
+
+
+@parameterized_class([
+    {"org_payload": org_payload, "repos_payload": repos_payload,
+     "expected_repos": expected_repos, "apache2_repos": apache2_repos},
+])
+class TestIntegrationGithubOrgClient(unittest.TestCase):
+    """Integration test for GithubOrgClient.public_repos method"""
+
+    @classmethod
+    def setUpClass(cls):
+        """set up class method for setting up the tests"""
+
+        cls.get_patcher = patch('requests.get')
+
+        # Starting the patcher
+        cls.get = cls.get_patcher.start()
+
+        # Side effects for the patched method to return desired mock objects
+        cls.get.side_effect = [
+            cls.org_payload,
+            cls.repos_payload,
+        ]
+
+    @classmethod
+    def tearDownClass(cls):
+        """Tear down class method for cleaning up after tests"""
+        cls.get_patcher.stop()
+
+    def test_public_repos(self):
+        """Test the GithubOrgClient.public_repos method"""
+
+        # Initializing GithubOrgClient
+        test_client = GithubOrgClient('example_org_name')
+
+        # Testing public_repos method returns expected repos
+        self.assertEqual(test_client.public_repos(), self.expected_repos)
+
+        # Making assertions about calls to the patched requests.get method
+        self.get.assert_called_once_with(
+            'https://api.github.com/orgs/example_org_name')
