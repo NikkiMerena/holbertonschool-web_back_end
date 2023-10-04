@@ -2,7 +2,7 @@
 """Test module for utils.access_nested_map"""
 import unittest
 from parameterized import parameterized 
-from utils import access_nested_map, get_json, memoize
+from utils import access_nested_map, get_json
 from unittest.mock import patch, Mock
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -28,6 +28,23 @@ class TestAccessNestedMap(unittest.TestCase):
         """Test access_nested_map raises a KeyError"""
         with self.assertRaises(KeyError) as e:
             access_nested_map(nested_map, path)
+
+class TestGetJson(unittest.TestCase):
+    """Testing get_Json function"""
+
+    @parameterized.expand([
+        ("http://example.com", {"payload": True}),
+        ("http://holberton.io", {"paylaod": False})
+    ])
+    @patch('utils.requests.get')
+    def test_get_json(self, test_url, test_payload, mock_get):
+        """Test that utils.get_json returns the expected result."""
         
-        # If you need to check the exception message, you can use:
-        # self.assertEqual(str(e.exception), "Your expected exception message")
+        # Create a Mock object that returns `test_payload` when its `.json()` method is called.
+        mock_get.return_value.json.return_value = test_payload
+        
+        # Call the function and check its return value
+        self.assertEqual(get_json(test_url), test_payload)
+        
+        # Check that `requests.get` was called with `test_url`
+        mock_get.assert_called_once_with(test_url)
