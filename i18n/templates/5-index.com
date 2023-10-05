@@ -1,31 +1,23 @@
-<!-- <!DOCTYPE html>
-<html>
-  <head>
-    <title>{{ gettext('home_title') }}</title>
-  </head>
-  <body>
-    <h1>{{ gettext('home_header') }}</h1>
-    {% if g.user %}
-      <p>{{ gettext('logged_in_as', username=g.user.name) }}</p>
-    {% else %}
-      <p>{{ gettext('not_logged_in') }}</p>
-    {% endif %}
-  </body>
-</html>-->
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-  <title>{{ gettext('home_title') }}</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ _('home_title') }}</title>
 </head>
+
 <body>
-  <h1>{{ gettext('home_header') }}</h1>
-  <p>
+    <h1>{{ _('home_header') }}</h1>
     {% if g.user %}
-      {{ gettext('logged_in_as', username=g.user.name) }}
+    <p>
+        {{ _('logged_in_as', username=g.user['name']) }}
+    </p>
     {% else %}
-      {{ gettext('not_logged_in') }}
+    <p>
+        {{ _('not_logged_in') }}
+    </p>
     {% endif %}
-  </p>
 </body>
+
 </html>
