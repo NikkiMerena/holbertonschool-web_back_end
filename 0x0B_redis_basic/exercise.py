@@ -31,40 +31,6 @@ class Cache:
         self._redis.set(key, data)
         return key
 
-    def get(self, key, fn=None):
-        # Retrieve the value from Redis using self._redis.get(key)
-        value = self._redis.get(key)
-
-        if value is None:
-            return None
-
-        # Apply the provided Callable (fn) if available
-        if fn is not None:
-            return fn(value)
-        else:
-            return value  # Return the value as-is if fn is not provided
-
-    def get_str(self, key):
-        # Use get method with fn to decode as UTF-8 string
-        return self.get(key, fn=lambda d: d.decode("utf-8"))
-
-    def get_int(self, key):
-        # Use get method with fn to convert to int
-        return self.get(key, fn=int)
-
-# Example usage:
-cache = Cache()
-
-TEST_CASES = {
-    b"foo": None,
-    123: int,
-    "bar": lambda d: d.decode("utf-8")
-}
-
-for value, fn in TEST_CASES.items():
-    key = cache.store(value)
-    assert cache.get(key, fn=fn) == value
-
 
 if __name__ == "__main__":
     cache = Cache()
