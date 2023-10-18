@@ -1,96 +1,76 @@
 #!/usr/bin/env python3
-""" Redis basic Project Tasks: 0-4 """
+""" Redis """
 import redis
 import uuid
 from typing import Union, Callable, Optional
 from functools import wraps
 
+# Constants for Redis keys
+INPUTS_KEY = ":inputs"
+OUTPUTS_KEY = ":outputs"
 
 def count_calls(method: Callable) -> Callable:
-    """ Count the number of times a method is called """
+    """ Count the number of times a method is called. """
     @wraps(method)
     def wrapper(self, *args, **kwargs):
-        """ Wrapper function """
         self._redis.incr(method.__qualname__)
         return method(self, *args, **kwargs)
     return wrapper
 
-
 def call_history(method: Callable) -> Callable:
-    """ Store the history of inputs and outputs for a particular function """
-    # Store the history of inputs and outputs for a particular function
+    """ Store the history of inputs and outputs for a particular function. """
     @wraps(method)
-    def wrapper(self, *args):
-        """ Wrapper function """
+    def wrapper(self, *args, **kwargs):
         # Store the input
-        self._redis.rpush("{}:inputs".format(method.__qualname__), str(args))
+        self._redis.rpush(f"{method.__qualname__}{INPUTS_KEY}", str(args))
         # Compute the output
-        output = method(self, *args)
+        output = method(self, *args, **kwargs)
         # Store the output
-        self._redis.rpush("{}:outputs".format(method.__qualname__), output)
+        self._redis.rpush(f"{method.__qualname__}{OUTPUTS_KEY}", output)
         return output
     return wrapper
 
-
 def replay(method: Callable):
-    """ Display the history of calls of a particular function """
-    # Display the history of calls of a particular function
+    """ Display the history of calls of a particular function. """
     r = redis.Redis()
-    # Get the number of times the function was called
     name = method.__qualname__
     count = r.get(name).decode("utf-8")
-    # Get the inputs
-    inputs = r.lrange("{}:inputs".format(name), 0, -1)
-    # Get the outputs
-    outputs = r.lrange("{}:outputs".format(name), 0, -1)
-    # Display the history of calls of a particular function
-    print("{} was called {} times:".format(name, count))
-    # Display the history of inputs and outputs
-    for i, o in zip(inputs, outputs):
-        print("{}(*{}) -> {}".format(name, i.decode("utf-8"),
-                                     o.decode("utf-8")))
-
+    inputs = r.lrange(f"{name}{INPUTS_KEY}", 0, -1)
+    outputs = r.lrange(f"{name}{OUTPUTS_KEY}", 0, -1)
+    print(f"{name} was called {count} times:")
+    for input_data, output_data in zip(inputs, outputs):
+        print(f"{name}(*{input_data.decode('utf-8')}) -> {output_data.decode('utf-8')}")
 
 class Cache:
-    """ Cache class """
+    """ Cache class. """
     def __init__(self):
-        """  Create an instance of the Redis client and flush the database """
         self._redis = redis.Redis()
         self._redis.flushdb()
 
     @count_calls
     @call_history
     def store(self, data: Union[str, bytes, int, float]) -> str:
-        """ Store the input data in Redis using a randomly generated key """
-        # Generate a random key
+        """ Store the input data in Redis using a randomly generated key. """
         key = str(uuid.uuid4())
-        # Store the input data in Redis using the random key
         self._redis.set(key, data)
         return key
 
-    def get(self, key: str, fn: Optional[Callable] = None) -> Union[str,
-                                                                    bytes,
-                                                                    int,
-                                                                    float]:
-        """  Convert the data back to the desired format """
-        # Convert the data back to the desired format
+    def get(self, key: str, fn: Optional[Callable] = None) -> Union[str, bytes, int, float]:
+        """ Convert the data back to the desired format. """
         data = self._redis.get(key)
-        # If the key does not exist, return None
         if not data:
             return None
-        # Apply the function fn if necessary
         if fn:
             data = fn(data)
         return data
 
     def get_str(self, key: str) -> Optional[str]:
-        """ Convert bytes to string """
+        """ Convert bytes to string. """
         return self.get(key, fn=lambda x: x.decode("utf-8"))
 
     def get_int(self, key: bytes) -> int:
-        """ Convert bytes to int """
+        """ Convert bytes to int. """
         return self.get(key, fn=lambda x: int(x.decode("utf-8")))
-
 
 # Usage example
 if __name__ == '__main__':
