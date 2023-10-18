@@ -9,6 +9,7 @@ from functools import wraps
 INPUTS_KEY = ":inputs"
 OUTPUTS_KEY = ":outputs"
 
+
 def count_calls(method: Callable) -> Callable:
     """ Count the number of times a method is called. """
     @wraps(method)
@@ -16,6 +17,7 @@ def count_calls(method: Callable) -> Callable:
         self._redis.incr(method.__qualname__)
         return method(self, *args, **kwargs)
     return wrapper
+
 
 def call_history(method: Callable) -> Callable:
     """ Store the history of inputs and outputs for a particular function. """
@@ -30,6 +32,7 @@ def call_history(method: Callable) -> Callable:
         return output
     return wrapper
 
+
 def replay(method: Callable):
     """ Display the history of calls of a particular function. """
     r = redis.Redis()
@@ -39,7 +42,11 @@ def replay(method: Callable):
     outputs = r.lrange(f"{name}{OUTPUTS_KEY}", 0, -1)
     print(f"{name} was called {count} times:")
     for input_data, output_data in zip(inputs, outputs):
-        print(f"{name}(*{input_data.decode('utf-8')}) -> {output_data.decode('utf-8')}")
+        input_str = input_data.decode('utf-8')
+        output_str = output_data.decode('utf-8')
+        call_str = f"{name}(*{input_str}) -> {output_str}"
+        print(call_str)
+
 
 class Cache:
     """ Cache class. """
@@ -55,7 +62,12 @@ class Cache:
         self._redis.set(key, data)
         return key
 
-    def get(self, key: str, fn: Optional[Callable] = None) -> Union[str, bytes, int, float]:
+    def get(
+        self,
+        key: str,
+        fn: Optional[Callable] = None
+    ) -> Union[str, bytes, int, float]:
+
         """ Convert the data back to the desired format. """
         data = self._redis.get(key)
         if not data:
@@ -71,6 +83,7 @@ class Cache:
     def get_int(self, key: bytes) -> int:
         """ Convert bytes to int. """
         return self.get(key, fn=lambda x: int(x.decode("utf-8")))
+
 
 # Usage example
 if __name__ == '__main__':
