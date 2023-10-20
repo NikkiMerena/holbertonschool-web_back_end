@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """function that lists all docs in a collection."""
 
 def list_all(mongo_collection):
