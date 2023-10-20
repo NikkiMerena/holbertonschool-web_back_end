@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
-"""Changes all topics of a school documnet based on the name"""
-import pymongo
+"""Changes all topics of a school document based on the name."""
 
 
-def upate_topics(mongo_collection, name, topics):
-    """changes all topics of a school doc based on the name"""
-    return mongo_collection.update_many(
-        {"name": name},
-        {"$set": {"topics": topics}}
-    )
+def update_topics(mongo_collection, name, topics):
+    """Changes all topics."""
+    result = mongo_collection.update_many({'name': name},
+                                          {'$set': {'topics': topics}})
+    return result.modified_count
