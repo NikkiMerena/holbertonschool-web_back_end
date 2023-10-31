@@ -6,4 +6,4 @@ class AppController {
   }
 }
 
-module.express = AppController;
+module.exports = AppController;
