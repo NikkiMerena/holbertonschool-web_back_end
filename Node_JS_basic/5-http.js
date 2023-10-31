@@ -11,7 +11,10 @@ const app = http
       case '/students':
         res.write('This is the list of our students\n');
         countStudents(process.argv[2])
-          .then((data) => res.end(data))
+          .then((data) => {
+            const responseData = data.join('\n'); // Convert array to a single string
+            res.end(responseData);
+          })
           .catch((err) => res.end(err.message));
         break;
       default:
