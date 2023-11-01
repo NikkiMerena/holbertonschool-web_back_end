@@ -1,17 +1,10 @@
 {
-  "name": "package.json",
-  "version": "1.0.0",
-  "description": "package.json",
-  "main": "index.js",
-  "dependencies": {},
+  "scripts": {
+    "test": "mocha"
+  },
   "devDependencies": {
     "chai": "^4.3.10",
     "mocha": "^10.2.0",
-    "sinon": "^17.0.1"
-  },
-  "scripts": {
-    "test": "mocha 0-calcul.test.js"
-  },
-  "author": "",
-  "license": "ISC"
+    "sinon": "^17.0.0"
+  }
 }

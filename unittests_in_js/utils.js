@@ -1,21 +1,21 @@
-// utils.js
+// utils module
 const Utils = {
-    calculateNumber: function (type, a, b) {
-      if (type === 'SUM') {
-        return Math.round(a) + Math.round(b);
-    } else if (type === 'SUBTRACT') {
-        return Math.round(a) - Math.round(b);
-    } else if (type === 'DIVIDE') {
-      const roundedB = Math.round(b);
-      if (roundedB === 0) {
-        return 'Error';
-      }
-      return Math.round(a) / roundedB;
-    } else {
-      throw new Error('Invalid type');
-    }
-  },
+  calculateNumber: (type, a, b) => {
+  // check if args are not a number
+  // else - throw errors
+  if (isNaN(a) || isNaN(b)) {
+  throw TypeError('Type must be a number');
+  }
+  // return number result if applicable
+  if (type === 'SUM') return Math.round(a) + Math.round(b);
+  if (type === 'SUBTRACT') return Math.round(a) - Math.round(b);
+  if (type === 'DIVIDE') {
+  if (Math.round(a) === 0 || Math.round(b) === 0) {
+    return 'Error';
+  }
+  return Math.round(a) / Math.round(b);
+  }
+}
 };
 
-module.exports.Utils = Utils;
-module.exports.calculateNumber = Utils.calculateNumber; // Export the function seperately
+module.exports = Utils;

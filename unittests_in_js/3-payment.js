@@ -1,9 +1,11 @@
-// 3-payment.js
-const { Utils } = require('./utils');
+// task three - totally spies
+// import calc module
+const Utils = require('./utils');
 
-function sendPaymentRequestToApi(totalAmount, totalShipping) {
-    const result = Utils.calculateNumber('SUM', totalAmount,totalShipping);
-    console.log('The total is: ${result}');
-}
+const sendPaymentRequestToApi = (totalAmount, totalShipping) => {
+  const result = Utils.calculateNumber('SUM', totalAmount, totalShipping);
+  console.log(`The total is: ${result}`);
+  return result;
+};
 
 module.exports = sendPaymentRequestToApi;
