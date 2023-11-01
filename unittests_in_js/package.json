@@ -5,7 +5,9 @@
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
-    "mocha": "^10.2.0"
+    "chai": "^4.3.10",
+    "mocha": "^10.2.0",
+    "sinon": "^17.0.1"
   },
   "scripts": {
     "test": "mocha 0-calcul.test.js"
